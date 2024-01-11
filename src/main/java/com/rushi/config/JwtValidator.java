@@ -25,28 +25,24 @@ public class JwtValidator extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		String jwt = request.getHeader(JwtConstant.JWT_HEADER);
 		
-		if(jwt!=null) {
+		String jwt = request.getHeader(JwtConstant.JWT_HEADER);
+
+		if (jwt != null) {
 			try {
-				
+
 				String email = JwtProvider.getEmailfromJwtTokenst(jwt);
-				 List<GrantedAuthority> authorities = new ArrayList<>();
-				 
-				 Authentication authentication = new UsernamePasswordAuthenticationToken(email , null ,authorities);
-				 
-				 SecurityContextHolder.getContext().setAuthentication(authentication);
-				
+				List<GrantedAuthority> authorities = new ArrayList<>();
+
+				Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, authorities);
+
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+
 			} catch (Exception e) {
-				throw  new BadCredentialsException("BadCredentials");
+				throw new BadCredentialsException("invalid token");
 			}
-			
-		}else {
-			throw new BadCredentialsException("kindly provide a vaild token ");
 		}
+
 		filterChain.doFilter(request, response);
 	}
-
-	
-
 }
