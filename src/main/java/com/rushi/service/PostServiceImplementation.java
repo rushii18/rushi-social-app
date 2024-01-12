@@ -35,6 +35,7 @@ public class PostServiceImplementation implements PostService {
 		newPost.setUser(user);
 
 		return postRepository.save(newPost);
+		return null;
 	}
 
 	@Override

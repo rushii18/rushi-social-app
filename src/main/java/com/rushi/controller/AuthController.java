@@ -1,9 +1,12 @@
 package com.rushi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rushi.config.JwtProvider;
 import com.rushi.models.User;
 import com.rushi.repository.UserRepository;
+import com.rushi.request.LoginRequest;
 import com.rushi.respones.Authrespons;
+import com.rushi.service.CustomUserDetailService;
 import com.rushi.service.UserService;
 
 @RestController
@@ -20,6 +25,8 @@ import com.rushi.service.UserService;
 public class AuthController {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private CustomUserDetailService customUserDetailService;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -27,31 +34,62 @@ public class AuthController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@PostMapping("/signup ")
+	@PostMapping("/signup")
 	public Authrespons CreateUser(@RequestBody User user) throws Exception {
-   
+
 		User isuserexist = userRepository.findByEmail(user.getEmail());
-		if(isuserexist!=null) {
+		if (isuserexist != null) {
 			throw new Exception(" email is exist used by another accout");
 		}
-		
+
 		User usercreate = new User();
 
 		usercreate.setFirstName(user.getFirstName());
 		usercreate.setLastName(user.getLastName());
 		usercreate.setPassword(passwordEncoder.encode(user.getPassword()));
-		usercreate.setContactNo(user.getContactNo());
+		// usercreate.setContactNo(user.getContactNo());
 		usercreate.setEmail(user.getEmail());
 
 		User saveuser = userRepository.save(usercreate);
-		
-		Authentication authentication = new UsernamePasswordAuthenticationToken(saveuser.getEmail(), saveuser.getPassword() );
-		
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(saveuser.getEmail(),
+				saveuser.getPassword());
+
 		String token = JwtProvider.generateToken(authentication);
 
-		Authrespons authrespons = new Authrespons(token , "Register Sussess");
-		
+		Authrespons authrespons = new Authrespons(token, "Register Sussess");
+
 		return authrespons;
+	}
+
+	@PostMapping("/signin")
+	public Authrespons Signin(@RequestBody LoginRequest loginrequest) {
+
+		Authentication authentication = authenticate(loginrequest.getEmail(), loginrequest.getPassword());
+
+		String token = JwtProvider.generateToken(authentication);
+
+		Authrespons authrespons = new Authrespons(token, "login Sussess");
+
+		return authrespons;
+
+	}
+
+	private Authentication authenticate(String email, String password) {
+
+		UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
+		if (userDetails == null) {
+			throw new BadCredentialsException("invalid username");
+
+		}
+
+		if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+
+			throw new BadCredentialsException("invalid password");
+
+		}
+
+		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 	}
 
 }
