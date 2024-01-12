@@ -57,19 +57,19 @@ public class UserController {
 		return updateduser;
 	}
 
-     @DeleteMapping("/api/users/{userid}")
-     public String deletuser(@PathVariable Integer userid) throws Exception {
-    	 
-    	  Optional<User> user = userRepository.findById(userid);
-     	 
-    	  if(user.isEmpty()) {
-    		  throw new Exception("id not exist" + userid);
-    	  }
-    	 
-    	 userRepository.deleteById(userid);
-    	 
-    	 return "delet user successfully" +userid;
-     }
+	@DeleteMapping("/api/users/{userid}")
+	public String deletuser(@PathVariable Integer userid) throws Exception {
+
+		Optional<User> user = userRepository.findById(userid);
+
+		if (user.isEmpty()) {
+			throw new Exception("id not exist" + userid);
+		}
+
+		userRepository.deleteById(userid);
+
+		return "delet user successfully" + userid;
+	}
 
 	@PutMapping("/api/users/{userid1}/{userid2}")
 	public User followUserHandler(@PathVariable Integer userid1, @PathVariable Integer userid2) throws Exception {

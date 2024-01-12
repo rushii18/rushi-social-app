@@ -1,13 +1,22 @@
-package com.rushi.service;
+package com.rushi.serviceimplementation;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.rushi.config.JwtProvider;
 import com.rushi.models.User;
+import com.rushi.repository.PostRepository;
 import com.rushi.repository.UserRepository;
+import com.rushi.respones.Authrespons;
+import com.rushi.service.UserService;
 
 @Service
 public class UserServiceImplementation implements UserService {

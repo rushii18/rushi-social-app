@@ -1,4 +1,4 @@
-package com.rushi.service;
+package com.rushi.serviceimplementation;
 
 import java.util.ArrayList;
 import java.util.List;

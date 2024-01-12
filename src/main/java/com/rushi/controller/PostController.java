@@ -21,6 +21,20 @@ import com.rushi.service.PostService;
 public class PostController {
 	@Autowired
 	PostService postService;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@PostMapping("/posts/user/{userid}")
 	public ResponseEntity<Post> createPost(@RequestBody Post post, @PathVariable Integer userid) throws Exception {

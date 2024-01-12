@@ -1,4 +1,4 @@
-package com.rushi.service;
+package com.rushi.serviceimplementation;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,21 +6,36 @@ import java.util.Optional;
 
 import org.hibernate.dialect.function.PostgreSQLTruncRoundFunction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.rushi.config.JwtProvider;
 import com.rushi.models.Post;
 import com.rushi.models.User;
 import com.rushi.repository.PostRepository;
 import com.rushi.repository.UserRepository;
+import com.rushi.respones.Authrespons;
+import com.rushi.service.PostService;
+import com.rushi.service.UserService;
 
 @Service
 public class PostServiceImplementation implements PostService {
+
 	@Autowired
-	PostRepository postRepository;
+	private PostRepository postRepository;
+//	@Autowired
+//	//private PostService postService;
+
 	@Autowired
-	UserService userService;
+	private UserRepository userRepository;
 	@Autowired
-	UserRepository userRepository;
+	private UserService userService;
 
 	@Override
 	public Post createNewPost(Post post, Integer userid) throws Exception {
@@ -35,7 +50,7 @@ public class PostServiceImplementation implements PostService {
 		newPost.setUser(user);
 
 		return postRepository.save(newPost);
-		
+
 	}
 
 	@Override

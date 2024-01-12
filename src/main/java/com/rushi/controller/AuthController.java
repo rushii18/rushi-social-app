@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rushi.authservice.AuthService;
 import com.rushi.config.JwtProvider;
 import com.rushi.models.User;
 import com.rushi.repository.UserRepository;
 import com.rushi.request.LoginRequest;
 import com.rushi.respones.Authrespons;
-import com.rushi.service.CustomUserDetailService;
 import com.rushi.service.UserService;
+import com.rushi.serviceimplementation.CustomUserDetailService;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,64 +33,51 @@ public class AuthController {
 	private UserRepository userRepository;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private AuthService authService;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	@PostMapping("/signup")
 	public Authrespons CreateUser(@RequestBody User user) throws Exception {
 
-		User isuserexist = userRepository.findByEmail(user.getEmail());
-		if (isuserexist != null) {
-			throw new Exception(" email is exist used by another accout");
-		}
+		  Authrespons auth = authService.CreateUser(user);
 
-		User usercreate = new User();
-
-		usercreate.setFirstName(user.getFirstName());
-		usercreate.setLastName(user.getLastName());
-		usercreate.setPassword(passwordEncoder.encode(user.getPassword()));
-		// usercreate.setContactNo(user.getContactNo());
-		usercreate.setEmail(user.getEmail());
-
-		User saveuser = userRepository.save(usercreate);
-
-		Authentication authentication = new UsernamePasswordAuthenticationToken(saveuser.getEmail(),
-				saveuser.getPassword());
-
-		String token = JwtProvider.generateToken(authentication);
-
-		Authrespons authrespons = new Authrespons(token, "Register Sussess");
-
-		return authrespons;
+		return auth;
 	}
 
 	@PostMapping("/signin")
 	public Authrespons Signin(@RequestBody LoginRequest loginrequest) {
 
-		Authentication authentication = authenticate(loginrequest.getEmail(), loginrequest.getPassword());
+	//	Authentication authentication = authenticate(loginrequest.getEmail(), loginrequest.getPassword());
+		
+		Authentication authentication = authService.authenticate(loginrequest.getEmail(), loginrequest.getPassword());
+		
+		
 
 		String token = JwtProvider.generateToken(authentication);
 
 		Authrespons authrespons = new Authrespons(token, "login Sussess");
 
 		return authrespons;
-
+ 
 	}
 
-	private Authentication authenticate(String email, String password) {
-
-		UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
-		if (userDetails == null) {
-			throw new BadCredentialsException("invalid username");
-
-		}
-
-		if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-
-			throw new BadCredentialsException("invalid password");
-
-		}
-
-		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-	}
+//	private Authentication authenticate(String email, String password) {
+//
+//		UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
+//		if (userDetails == null) {
+//			throw new BadCredentialsException("invalid username");
+//
+//		}
+//
+//		if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+//
+//			throw new BadCredentialsException("invalid password");
+//
+//		}
+//
+//		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//	}
 
 }
