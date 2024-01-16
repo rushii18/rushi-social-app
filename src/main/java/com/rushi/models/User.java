@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-@Entity// to create table in your database in our case we are using SQL workbench
+@Entity // to create table in your database in our case we are using SQL workbench
 @Table(name = "users") // to create table name
 public class User {
 
@@ -32,12 +32,16 @@ public class User {
 	@ManyToMany
 	private List<Post> savepost = new ArrayList<>();
 
+	@ManyToMany
+	private List<Comment> commnet = new ArrayList<>();
+
 	public User() {
 
 	}
 
 	public User(int id, String firstName, String lastName, String email, String password, String contactNo,
-			String gender, List<Integer> followers, List<Integer> following) {
+			String gender, List<Integer> followers, List<Integer> following, List<Post> savepost,
+			List<Comment> commnet) {
 		super();
 		this.id = id;
 		FirstName = firstName;
@@ -48,6 +52,16 @@ public class User {
 		this.gender = gender;
 		this.followers = followers;
 		this.following = following;
+		this.savepost = savepost;
+		this.commnet = commnet;
+	}
+
+	public List<Comment> getCommnet() {
+		return commnet;
+	}
+
+	public void setCommnet(List<Comment> commnet) {
+		this.commnet = commnet;
 	}
 
 	public List<Post> getSavepost() {
@@ -110,7 +124,8 @@ public class User {
 		return gender;
 	}
 
-	public void setGender(String gender) { this.gender = gender;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public List<Integer> getFollowers() {

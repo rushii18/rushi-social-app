@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rushi.config.JwtProvider;
 import com.rushi.models.User;
 import com.rushi.repository.UserRepository;
 import com.rushi.service.UserService;
@@ -50,15 +52,19 @@ public class UserController {
 
 	}
 
-	@PutMapping("/api/users/{userid}")
-	public User updateuser(@RequestBody User user, @PathVariable Integer userid) throws Exception {
+	@PutMapping("/api/users/")
+	public User updateuser(@RequestBody User user, @RequestHeader("Authorization") String jwt) throws Exception {
+		
+		User jwtuser = userService.findUserfromJwt(jwt);
 
-		User updateduser = userService.updateUser(user, userid);
+		User updateduser = userService.updateUser(user, jwtuser.getId());
 		return updateduser;
 	}
 
 	@DeleteMapping("/api/users/{userid}")
 	public String deletuser(@PathVariable Integer userid) throws Exception {
+		
+		
 
 		Optional<User> user = userRepository.findById(userid);
 
@@ -71,10 +77,12 @@ public class UserController {
 		return "delet user successfully" + userid;
 	}
 
-	@PutMapping("/api/users/{userid1}/{userid2}")
-	public User followUserHandler(@PathVariable Integer userid1, @PathVariable Integer userid2) throws Exception {
+	@PutMapping("/api/users/{userid2}")
+	public User followUserHandler( @RequestHeader("Authorization") String jwt, @PathVariable Integer userid2) throws Exception {
 
-		User user = userService.FollowUser(userid1, userid2);
+		User requestuser = userService.findUserfromJwt(jwt);
+		
+		User user = userService.FollowUser(requestuser.getId(), userid2);
 
 		return user;
 	}
@@ -86,11 +94,21 @@ public class UserController {
 		return users;
 	}
 
-	@GetMapping("/api/users/Email")
-	public User searchByEmail(@PathVariable String Email) {
+	@GetMapping("/api/users/email")
+	public User searchByEmail(@PathVariable String email) {
 
-		User user = userService.findUserByEmail(Email);
+		User user = userService.findUserByEmail(email);
 		return user;
 	}
+	
+	@GetMapping("/api/users/profile")
+	public User getUserbyToken(@RequestHeader("Authorization") String jwt) {
+		
+		User user = userService.findUserfromJwt(jwt);
+		
+		return user;
+	}
+	
+	
 
 }

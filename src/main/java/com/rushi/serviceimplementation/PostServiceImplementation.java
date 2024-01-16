@@ -45,7 +45,7 @@ public class PostServiceImplementation implements PostService {
 
 		newPost.setCaption(post.getCaption());
 		newPost.setImage(post.getImage());
-		newPost.setViedo(post.getViedo());
+		newPost.setVideo(post.getVideo());
 		newPost.setCreatedAT(LocalDateTime.now());
 		newPost.setUser(user);
 
@@ -76,6 +76,7 @@ public class PostServiceImplementation implements PostService {
 	public Post finidPostByid(Integer userid) throws Exception {
 
 		Optional<Post> opt = postRepository.findById(userid);
+		
 		if (opt.isEmpty()) {
 			throw new Exception("post not found with id " + userid);
 		}

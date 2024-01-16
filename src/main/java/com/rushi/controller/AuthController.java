@@ -34,14 +34,14 @@ public class AuthController {
 
 	@Autowired
 	private AuthService authService;
-	
+
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
 	@PostMapping("/signup")
 	public Authrespons CreateUser(@RequestBody User user) throws Exception {
 
-		  Authrespons auth = authService.CreateUser(user);
+		Authrespons auth = authService.CreateUser(user);
 
 		return auth;
 	}
@@ -49,35 +49,19 @@ public class AuthController {
 	@PostMapping("/signin")
 	public Authrespons Signin(@RequestBody LoginRequest loginrequest) {
 
-	//	Authentication authentication = authenticate(loginrequest.getEmail(), loginrequest.getPassword());
-		
+		// Authentication authentication = authenticate(loginrequest.getEmail(),
+		// loginrequest.getPassword());
+
 		Authentication authentication = authService.authenticate(loginrequest.getEmail(), loginrequest.getPassword());
-		
-		
 
 		String token = JwtProvider.generateToken(authentication);
 
 		Authrespons authrespons = new Authrespons(token, "login Sussess");
 
 		return authrespons;
- 
+
 	}
 
-//	private Authentication authenticate(String email, String password) {
-//
-//		UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
-//		if (userDetails == null) {
-//			throw new BadCredentialsException("invalid username");
-//
-//		}
-//
-//		if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-//
-//			throw new BadCredentialsException("invalid password");
-//
-//		}
-//
-//		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//	}
+
 
 }

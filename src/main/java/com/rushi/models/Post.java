@@ -22,7 +22,7 @@ public class Post {
 	private Integer id;
 	private String caption;
 	private String image;
-	private String viedo;
+	private String video;
 	@ManyToOne
 	private User user;
 
@@ -30,20 +30,32 @@ public class Post {
 	@OneToMany
 	private List<User> likeuser = new ArrayList<>();
 
+	@OneToMany
+	private List<Comment> commentUser = new ArrayList<>();
+
 	public Post() {
 
 	}
 
-	public Post(Integer id, String caption, String image, String viedo, User user, LocalDateTime createdAT,
-			List<User> likeuser) {
+	public Post(Integer id, String caption, String image, String video, User user, LocalDateTime createdAT,
+			List<User> likeuser, List<Comment> commentUser) {
 		super();
 		this.id = id;
 		this.caption = caption;
 		this.image = image;
-		this.viedo = viedo;
+		this.video = video;
 		this.user = user;
 		this.createdAT = createdAT;
 		this.likeuser = likeuser;
+		this.commentUser = commentUser;
+	}
+
+	public List<Comment> getCommentUser() {
+		return commentUser;
+	}
+
+	public void setCommentUser(List<Comment> commentUser) {
+		this.commentUser = commentUser;
 	}
 
 	public List<User> getLikeuser() {
@@ -78,12 +90,13 @@ public class Post {
 		this.image = image;
 	}
 
-	public String getViedo() {
-		return viedo;
+
+	public String getVideo() {
+		return video;
 	}
 
-	public void setViedo(String viedo) {
-		this.viedo = viedo;
+	public void setVideo(String video) {
+		this.video = video;
 	}
 
 	public User getUser() {

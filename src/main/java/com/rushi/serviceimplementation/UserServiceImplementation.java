@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.rushi.config.JwtProvider;
+import com.rushi.config.JwtValidator;
 import com.rushi.models.User;
 import com.rushi.repository.PostRepository;
 import com.rushi.repository.UserRepository;
@@ -54,24 +55,24 @@ public class UserServiceImplementation implements UserService {
 	}
 
 	@Override
-	public User findUserByEmail(String Email) {
+	public User findUserByEmail(String email) {
 
-		User useremail = userRepository.findByEmail(Email);
+		User useremail = userRepository.findByEmail(email);
 		return useremail;
 	}
 
 	@Override
-	public User FollowUser(Integer userid1, Integer userid2) throws Exception {
-		User user1 = findUserByid(userid1);
+	public User FollowUser(Integer requestUserid, Integer userid2) throws Exception {
+		User requestUser = findUserByid(requestUserid);
 		User user2 = findUserByid(userid2);
 
-		user2.getFollowers().add(user1.getId());
-		user1.getFollowing().add(user2.getId());
+		user2.getFollowers().add(requestUser.getId());
+		requestUser.getFollowing().add(user2.getId());
 
-		userRepository.save(user1);
+		userRepository.save(requestUser);
 		userRepository.save(user2);
 
-		return user1;
+		return requestUser;
 	}
 
 	@Override
@@ -109,6 +110,16 @@ public class UserServiceImplementation implements UserService {
 	public List<User> searchUser(String qury) {
 
 		return userRepository.searchByUser(qury);
+	}
+
+	@Override
+	public User findUserfromJwt(String jwt) {
+
+		String email = JwtProvider.getEmailfromJwtTokenst(jwt);
+
+		User user = userRepository.findByEmail(email);
+
+		return user;
 	}
 
 }
