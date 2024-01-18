@@ -95,7 +95,7 @@ public class UserController {
 	}
 
 	@GetMapping("/api/users/email")
-	public User searchByEmail(@PathVariable String email) {
+	public User searchByEmail(@RequestBody String email) {
 
 		User user = userService.findUserByEmail(email);
 		return user;
