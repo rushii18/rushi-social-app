@@ -7,10 +7,10 @@ import com.rushi.models.User;
 
 public interface ChatService {
 	
-	public Chat createchat(Chat chat , Integer userid);
+	public Chat createchat(User user , User reqUser);
 	
-	public Chat findChatByid(Integer userid);
+	public Chat findChatByid(Integer chatid) throws Exception;
 		
-	public List< Chat> findUserChat(Integer userid);
+	public List<Chat> findUserChat(Integer userid);
 
 }

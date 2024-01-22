@@ -2,9 +2,11 @@ package com.rushi.serviceimplementation;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.rushi.models.Chat;
 import com.rushi.models.User;
@@ -17,35 +19,40 @@ public class ChatServiceImplementation implements ChatService {
 
 	@Autowired
 	private ChatRepository chatRepository;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Override
-	public Chat createchat(Chat chat, Integer userid) {
-		
-		//Chat chat2 = chatRepository.findByUserId(userid);
-		
-		
-//		chat2.setChatname(chat.getChatname());
-//		chat2.setImage(chat.getImage());
-//		chat2.setTime(LocalDateTime.now());
-//		
-//		
-		
-		return null;
+	public Chat createchat(User user, User reqUser) {
+
+		Chat isexist = chatRepository.findChatByUserId(user, reqUser);
+
+		if (isexist != null) {
+			return isexist;
+		}
+		Chat chat = new Chat();
+		chat.getUser().add(user);
+		chat.getUser().add(reqUser);
+
+		return chatRepository.save(chat);
 	}
 
 	@Override
-	public Chat findChatByid(Integer userid) {
-		// TODO Auto-generated method stub
-		return null;
+	public Chat findChatByid(Integer chatid) throws Exception {
+		Optional<Chat> chat = chatRepository.findById(chatid);
+		if (chat.isEmpty()) {
+			throw new Exception("chat not found with id" + chatid);
+		}
+
+		return chat.get();
 	}
 
 	@Override
 	public List<Chat> findUserChat(Integer userid) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return chatRepository.findByUserId(userid);
+
 	}
 
 }

@@ -4,39 +4,42 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="comment")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class Massage {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+
 	private Integer id;
 
 	private String content;
-
+	
+	private String image;
+	
+	private LocalDateTime time;
+	
 	@ManyToOne
 	private User user;
-
-	@OneToMany
-	private List<User> liked = new ArrayList<>();
-
-	private LocalDateTime createdat;
-
+	
+	@JsonIgnore
+	@ManyToOne
+	private Chat chat;
+	
+	
 	
 }

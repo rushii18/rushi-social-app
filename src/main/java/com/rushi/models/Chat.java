@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,11 +25,13 @@ public class Chat {
 	
 	private String chatname;
 	
-	private String image;
+	private String chatimage;
 	
 	@ManyToMany
-	private List<User> list = new ArrayList<>();
+	private List<User> user = new ArrayList<>();
 	
 	private LocalDateTime time;
 
+	@OneToMany(mappedBy = "chat")
+	 private List<Massage> massage = new ArrayList<>();
 }
