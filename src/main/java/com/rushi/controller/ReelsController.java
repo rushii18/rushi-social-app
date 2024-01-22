@@ -32,8 +32,7 @@ public class ReelsController {
 
 		return reelsCreate;
 	}
-	
-	
+
 	@GetMapping("/api/reels/allreels")
 	public List<Reels> getAllReels() throws Exception {
 
@@ -41,12 +40,9 @@ public class ReelsController {
 
 		return reels;
 	}
-	
-	
-	
 
 	@GetMapping("/api/reels/users/{userid}")
-	public List<Reels> getAllReels(@PathVariable("userid") Integer userid) throws Exception {
+	public List<Reels> getReelsByuserId(@PathVariable("userid") Integer userid) throws Exception {
 
 		List<Reels> reels = reelsService.findUserReels(userid);
 
