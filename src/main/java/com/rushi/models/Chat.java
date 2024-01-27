@@ -33,5 +33,5 @@ public class Chat {
 	private LocalDateTime time;
 
 	@OneToMany(mappedBy = "chat")
-	 private List<Massage> massage = new ArrayList<>();
+	 private List<Message> message = new ArrayList<>();
 }

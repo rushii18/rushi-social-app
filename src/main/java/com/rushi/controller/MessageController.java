@@ -10,39 +10,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rushi.models.Massage;
+import com.rushi.models.Message;
 import com.rushi.models.User;
-import com.rushi.service.MassageService;
+import com.rushi.service.MessageService;
 import com.rushi.service.UserService;
 
 @RestController
-public class MassageController {
+public class MessageController {
 
 	@Autowired
-	private MassageService massageService;
+	private MessageService messageService;
 
 	@Autowired
 	private UserService userService;
 
 	@PostMapping("/api/massage/chat/{chatid}")
-	public Massage CreateMassage(@RequestHeader("Authorization") String jwt, @PathVariable Integer chatid,
-			@RequestBody Massage massage) throws Exception {
+	public Message CreateMassage(@RequestHeader("Authorization") String jwt, @PathVariable Integer chatid,
+			@RequestBody Message message) throws Exception {
 
 		User user = userService.findUserfromJwt(jwt);
 
-		Massage massageCreate = massageService.CreateMassage(user, chatid, massage);
+		Message MassageCreate = messageService.CreateMassage(user, chatid, message);
 
-		return massageCreate;
+		return MassageCreate;
 	}
 
 	@GetMapping("/api/getallmassage/{chatid}")
-	public List<Massage> getallMassage(@RequestHeader("Authorization") String jwt, @PathVariable Integer chatid)
+	public List<Message> getallMassage(@RequestHeader("Authorization") String jwt, @PathVariable Integer chatid)
 			throws Exception {
 		User user = userService.findUserfromJwt(jwt);
 
-		List<Massage> getallmassage = massageService.findchatMassege(chatid);
+		List<Message> GetAllMassage = messageService.findchatMassege(chatid);
 
-		return getallmassage;
+		return GetAllMassage;
 
 	}
 

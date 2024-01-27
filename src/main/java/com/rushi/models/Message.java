@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Massage {
+public class Message {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
