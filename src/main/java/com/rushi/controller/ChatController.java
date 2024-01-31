@@ -46,5 +46,13 @@ public class ChatController {
 
 		return chat;
 	}
+	
+	@GetMapping("/api/chatid/{chatid}")
+	public Chat findchatById(@PathVariable Integer chatid) throws Exception {
+	
+		Chat chat = chatService.findChatByid(chatid);
+		
+		return chat;
+	}
 
 }
