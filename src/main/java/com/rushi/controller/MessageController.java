@@ -1,8 +1,11 @@
 package com.rushi.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +27,7 @@ public class MessageController {
 	@Autowired
 	private UserService userService;
 
-	@PostMapping("/api/massage/chat/{chatid}")
+	@PostMapping(value = "/api/massage/chat/{chatid}", consumes = "application/json", produces = "application/json")
 	public Message CreateMassage(@RequestHeader("Authorization") String jwt, @PathVariable Integer chatid,
 			@RequestBody Message message) throws Exception {
 
