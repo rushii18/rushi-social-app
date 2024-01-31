@@ -2,8 +2,10 @@ package com.rushi.serviceimplementation;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.rushi.models.Chat;
@@ -11,6 +13,7 @@ import com.rushi.models.Message;
 import com.rushi.models.User;
 import com.rushi.repository.ChatRepository;
 import com.rushi.repository.MessageRepository;
+import com.rushi.request.KafkaConstants;
 import com.rushi.service.ChatService;
 import com.rushi.service.MessageService;
 import com.rushi.service.UserService;
@@ -28,6 +31,9 @@ public class MessageServiceImplementation implements MessageService {
 
 	@Autowired
 	private ChatRepository chatRepository;
+	
+	@Autowired
+	private KafkaTemplate<String, Message> kafkaTemplate;
 
 	@Override
 	public Message CreateMassage(User user, Integer chatid, Message reqMessage) throws Exception {
@@ -36,13 +42,23 @@ public class MessageServiceImplementation implements MessageService {
 
 		Message message = new Message();
 		message.setChat(chat);
+		message.setId(reqMessage.getId());
 		message.setContent(reqMessage.getContent());
 		message.setImage(reqMessage.getImage());
-		message.setUser(user);
+		//message.setUser(user);
+		String name = (user.getFirstName());
+		message.setUsername(name);
 		message.setTime(LocalDateTime.now());
 
 		chat.getMessage().add(message);
 		chatRepository.save(chat);
+		
+		try {
+			kafkaTemplate.send("message-topic", message).get();
+		} catch (InterruptedException | ExecutionException e) {
+
+			e.printStackTrace();
+		}
 
 		return messageRepository.save(message);
 

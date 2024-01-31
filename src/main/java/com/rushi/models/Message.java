@@ -33,6 +33,7 @@ public class Message {
 	
 	private LocalDateTime time;
 	
+	private String username;
 	@ManyToOne
 	private User user;
 	
