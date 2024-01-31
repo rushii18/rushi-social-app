@@ -44,6 +44,7 @@ public class AuthServiceIemplementation implements AuthService {
 		usercreate.setLastName(user.getLastName());
 		usercreate.setPassword(passwordEncoder.encode(user.getPassword()));
         usercreate.setContactNo(user.getContactNo());
+        usercreate.setGender(user.getGender());
 		usercreate.setEmail(user.getEmail());
 
 		User saveuser = userRepository.save(usercreate);

@@ -31,7 +31,7 @@ public class MessageServiceImplementation implements MessageService {
 
 	@Autowired
 	private ChatRepository chatRepository;
-	
+
 	@Autowired
 	private KafkaTemplate<String, Message> kafkaTemplate;
 
@@ -42,24 +42,23 @@ public class MessageServiceImplementation implements MessageService {
 
 		Message message = new Message();
 		message.setChat(chat);
-		message.setId(reqMessage.getId());
+
 		message.setContent(reqMessage.getContent());
 		message.setImage(reqMessage.getImage());
-		//message.setUser(user);
+
 		String name = (user.getFirstName());
 		message.setUsername(name);
 		message.setTime(LocalDateTime.now());
 
 		chat.getMessage().add(message);
 		chatRepository.save(chat);
-		
+
 		try {
 			kafkaTemplate.send("message-topic", message).get();
 		} catch (InterruptedException | ExecutionException e) {
 
 			e.printStackTrace();
 		}
-
 		return messageRepository.save(message);
 
 	}

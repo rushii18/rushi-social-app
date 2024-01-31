@@ -19,5 +19,7 @@ public interface UserService {
 	public List<User> searchUser(String qury);
 	
 	public User findUserfromJwt(String jwt);
+	
+	public String deletUser(Integer userid);
 
 }

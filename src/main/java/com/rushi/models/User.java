@@ -31,6 +31,7 @@ public class User {
 	private String Password;
 	private String contactNo;
 	private String gender;
+
 	private List<Integer> followers = new ArrayList<>();
 
 	private List<Integer> following = new ArrayList<>();
@@ -40,7 +41,5 @@ public class User {
 
 	@ManyToMany
 	private List<Comment> commnet = new ArrayList<>();
-
-	
 
 }

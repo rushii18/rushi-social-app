@@ -41,11 +41,12 @@ public class ChatServiceImplementation implements ChatService {
 	@Override
 	public Chat findChatByid(Integer chatid) throws Exception {
 		Optional<Chat> chat = chatRepository.findById(chatid);
-		if (chat.isEmpty()) {
-			throw new Exception("chat not found with id" + chatid);
+		
+		if (chat.isPresent()) {
+			return chat.get();
 		}
+		throw new Exception("chat not found with id " + chatid);
 
-		return chat.get();
 	}
 
 	@Override

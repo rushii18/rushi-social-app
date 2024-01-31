@@ -80,30 +80,29 @@ public class UserServiceImplementation implements UserService {
 
 		Optional<User> presentuser = userRepository.findById(userid);
 
-		if (presentuser.isEmpty()) {
-			throw new Exception("id not exist" + userid);
-		}
+		if (presentuser.isPresent()) {
 
-		User user5 = presentuser.get();
+			User user5 = presentuser.get();
 
-		if (user.getFirstName() != null) {
-			user5.setFirstName(user.getFirstName());
+			if (user.getFirstName() != null) {
+				user5.setFirstName(user.getFirstName());
+			}
+			if (user.getLastName() != null) {
+				user5.setLastName(user.getLastName());
+			}
+			if (user.getEmail() != null) {
+				user5.setEmail(user.getEmail());
+			}
+			if (user.getPassword() != null) {
+				user5.setPassword(user.getPassword());
+			}
+			if (user.getContactNo() != null) {
+				user5.setContactNo(user.getContactNo());
+			}
+			User updateuser = userRepository.save(user5);
+			return updateuser;
 		}
-		if (user.getLastName() != null) {
-			user5.setLastName(user.getLastName());
-		}
-		if (user.getEmail() != null) {
-			user5.setEmail(user.getEmail());
-		}
-		if (user.getPassword() != null) {
-			user5.setPassword(user.getPassword());
-		}
-		if (user.getContactNo() != null) {
-			user5.setContactNo(user.getContactNo());
-		}
-		User updateuser = userRepository.save(user5);
-
-		return updateuser;
+		throw new Exception("id not exist" + userid);
 	}
 
 	@Override
@@ -122,4 +121,13 @@ public class UserServiceImplementation implements UserService {
 		return user;
 	}
 
+	@Override
+	public String deletUser(Integer userid) {
+	
+		 userRepository.deleteById(userid);
+		
+		return "id deleted "+ userid;
+	}
+
+	
 }
