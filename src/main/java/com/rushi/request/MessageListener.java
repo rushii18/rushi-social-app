@@ -14,8 +14,6 @@ public class MessageListener {
 	@Autowired
 	SimpMessagingTemplate template;
 
-	
-	
 	public void listen(Message message) {
 		System.out.println("sending via kafka listener..");
 		template.convertAndSend("/topic/group", message);
