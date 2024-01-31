@@ -22,3 +22,26 @@ Prerequisites
 Java Development Kit (JDK) 17 
 Apache Kafka installed and configured
 Database (e.g., MySQL,) configured
+
+Getting Started
+Clone the Repository:
+
+bash
+Copy code
+git clone https://github.com/yourusername/social-media-app.git
+Configure Database:
+
+Configure the application.properties file with your database details.
+
+Run Apache Kafka:
+
+Start the Apache Kafka server.
+
+Build and Run the Application:
+
+bash
+Copy code
+cd social-media-app
+./mvnw clean install
+./mvnw spring-boot:run
+The application will be accessible at http://localhost:5454.
