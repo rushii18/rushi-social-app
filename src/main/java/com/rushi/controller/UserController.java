@@ -28,14 +28,6 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@PostMapping("/users")
-	public User CreateUser(@RequestBody User user) {
-
-		User newUser = userService.registeruser(user);
-
-		return newUser;
-	}
-
 	@GetMapping("/api/users")
 	public List<User> getallUser() {
 
@@ -52,7 +44,7 @@ public class UserController {
 
 	}
 
-	@PutMapping("/api/users/")
+	@PutMapping("/api/users")
 	public User updateuser(@RequestBody User user, @RequestHeader("Authorization") String jwt) throws Exception {
 
 		User jwtuser = userService.findUserfromJwt(jwt);
@@ -61,18 +53,15 @@ public class UserController {
 		return updateduser;
 	}
 
-	@DeleteMapping("/api/users/{userid}")
-	public String deletuser(@PathVariable Integer userid) throws Exception {
+	@DeleteMapping("/api/deleteuser/user")
+	public String deletuser(@RequestHeader("Authorization") String jwt) throws Exception {
 
-		Optional<User> user = userRepository.findById(userid);
+		User jwtuser = userService.findUserfromJwt(jwt);
 
-		if (user.isEmpty()) {
-			throw new Exception("id not exist" + userid);
-		}
+		userService.deletUser(jwtuser.getId());
 
-		userRepository.deleteById(userid);
+		return null;
 
-		return "delet user successfully" + userid;
 	}
 
 	@PutMapping("/api/users/{userid2}")
