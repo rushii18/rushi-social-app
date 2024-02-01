@@ -12,7 +12,7 @@ public class MessageListener {
 
 	@KafkaListener(topics = "message-topic", groupId = "1")
 	public void listenGroupFoo(String message) {
-	    System.out.println("Received Message in group foo: " + message);
+	    System.out.println( message);
 	}
 
 }
