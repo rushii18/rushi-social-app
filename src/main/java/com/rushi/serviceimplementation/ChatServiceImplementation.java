@@ -56,4 +56,12 @@ public class ChatServiceImplementation implements ChatService {
 
 	}
 
+	@Override
+	public String deletechat(Integer chatid) {
+		
+		 chatRepository.deleteById(chatid);;
+		
+		return "chatid is delete "+ chatid ;
+	}
+
 }
