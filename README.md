@@ -7,7 +7,6 @@ Java Spring Boot
 Spring Security
 JWT (JSON Web Tokens)
 Apache Kafka
-CORS (Cross-Origin Resource Sharing)
 Controller Advice
 
 
