@@ -41,25 +41,7 @@ public class AppConfig {
 
 	}
 
-	private CorsConfigurationSource corsConfigurationSource() {
-
-		return new CorsConfigurationSource() {
-
-			@Override
-			@Nullable
-			public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-				CorsConfiguration cfg = new CorsConfiguration();
-				cfg.setAllowedOrigins(Arrays.asList("http://localhost:5454"));
-				cfg.setAllowedMethods(Collections.singletonList("*"));
-				cfg.setAllowCredentials(true);
-				cfg.setAllowedHeaders(Arrays.asList("*"));
-				cfg.setExposedHeaders(Arrays.asList("Authorization"));
-				cfg.setMaxAge(3600l);
-
-				return cfg;
-			}
-		};
-	}
+	
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
