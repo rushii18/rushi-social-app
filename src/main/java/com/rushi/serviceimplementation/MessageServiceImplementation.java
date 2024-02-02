@@ -43,6 +43,7 @@ public class MessageServiceImplementation implements MessageService {
 		Message message = new Message();
 		message.setChat(chat);
 
+		message.setId(reqMessage.getId());
 		message.setContent(reqMessage.getContent());
 		message.setImage(reqMessage.getImage());
 

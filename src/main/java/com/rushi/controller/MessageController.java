@@ -28,8 +28,8 @@ public class MessageController {
 	private UserService userService;
 
 	@PostMapping(value = "/api/massage/chat/{chatid}", consumes = "application/json", produces = "application/json")
-	public Message CreateMassage(@RequestHeader("Authorization") String jwt, @PathVariable Integer chatid,
-			@RequestBody Message message) throws Exception {
+	public Message CreateMassage(@RequestHeader("Authorization") String jwt, @PathVariable Integer chatid
+		,@RequestBody Message message ) throws Exception {
 
 		User user = userService.findUserfromJwt(jwt);
 

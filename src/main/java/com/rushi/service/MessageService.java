@@ -8,7 +8,7 @@ import com.rushi.models.User;
 
 public interface MessageService {
 
-	public Message CreateMassage(User user, Integer chatid, Message reqMassage) throws Exception;
+	public Message CreateMassage(User user, Integer chatid, Message reqMassage ) throws Exception;
 
 	public List<Message> findchatMassege(Integer chat) throws Exception;
 
